@@ -1,0 +1,24 @@
+func main() {
+    // Variable declarations
+    var a = 10;
+    var b = 20;
+    var c = a + b * 2;   // 10 + 20*2 = 50
+    var d = c - 15;      // 50 - 15 = 35
+
+    // Print some variables
+    print(a);  // 10
+    print(b);  // 20
+    print(c);  // 50
+    print(d);  // 35
+
+    // Arithmetic expressions
+    var e = (a + b) * (c - d); // (10+20)*(50-35)=30*15=450
+    print(e);
+
+    // More complex expressions
+    var f = e - d + a * b;     // 450 - 35 + 10*20 = 450 - 35 + 200 = 615
+    print(f);
+
+    var g = f / 5;             // 615 / 5 = 123
+    print(g);
+}
