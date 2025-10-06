@@ -3,7 +3,7 @@ from ast_nodes import *
 class Interpreter:
     def __init__(self, tree):
         self.tree = tree
-        self.env = {}  # global environment
+        self.env = {}  
 
     def run(self):
         for func in self.tree.funcs:
@@ -62,6 +62,9 @@ class Interpreter:
         if isinstance(expr, Number):
             return expr.value
 
+        elif isinstance(expr, String):
+            return expr.value
+
         elif isinstance(expr, Var):
             val = self.env[expr.name]
             if getattr(expr, 'index_exprs', None):
@@ -71,7 +74,7 @@ class Interpreter:
 
         elif isinstance(expr, ArrayAccess):
             val = self.env[expr.name]
-            for i in expr.indices:
+            for i in expr.index_exprs:
                 val = val[self.eval_expr(i)]
             return val
 

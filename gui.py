@@ -6,10 +6,6 @@ from codegen import CodeGen
 from interpreter import Interpreter as HybridInterpreter
 import sys
 from io import StringIO
-import builtins
-
-#from interpreter import Interpreter as HybridInterpreter
-
 
 class MyCCApp:
     def __init__(self, root):
@@ -77,13 +73,13 @@ class MyCCApp:
 
     # ---------------- Run Code ----------------
     def run_code(self):
-        code = self.editor.get("1.0", tk.END)
+        code = self.editor.get("1.0", tk.END).rstrip()  # strip trailing newline/space
         self.output.delete("1.0", tk.END)
         self.captured_output = ""
 
         try:
             # -------- Lexer & Parser --------
-            tokens = lex(code)
+            tokens = list(lex(code))  # wrap in list() to allow multiple passes
             parser = Parser(tokens)
             tree = parser.parse()
 
@@ -105,17 +101,11 @@ class MyCCApp:
             self.captured_output += mystdout.getvalue()
 
         except Exception as e:
-            if hasattr(e, 'token') and hasattr(e.token, 'line'):
-                self.captured_output += f"Error at line {e.token.line}: {str(e)}\n"
-            else:
-                self.captured_output += f"Error: {str(e)}\n"
+            # Better error reporting
+            self.captured_output += f"Error: {type(e).__name__}: {str(e)}\n"
 
         # -------- Show output in GUI console --------
         self.output.insert(tk.END, self.captured_output)
-
-    # -------- Capture print helper (optional) --------
-    def _capture_print(self, *args):
-        self.captured_output += " ".join(map(str, args)) + "\n"
 
 if __name__ == "__main__":
     root = tk.Tk()

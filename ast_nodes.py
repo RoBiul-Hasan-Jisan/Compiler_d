@@ -66,3 +66,6 @@ class Slice(Node):
         self.var = var
         self.start = start
         self.end = end
+class String(Node):
+    def __init__(self, value):
+        self.value = value

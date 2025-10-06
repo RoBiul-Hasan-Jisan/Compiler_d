@@ -19,19 +19,37 @@ TOKEN_SPEC = [
     # Numbers
     ('NUMBER', r'\d+'),
 
+    # Strings (double quotes)
+    ('STRING', r'"(\\.|[^"\\])*"'),
+
     # Operators
-    ('LE', r'<='), ('GE', r'>='), ('EQ', r'=='), ('NE', r'!='), ('LT', r'<'), ('GT', r'>'),
-    ('PLUS', r'\+'), ('MINUS', r'-'), ('MUL', r'\*'), ('DIV', r'/'), ('MOD', r'%'),
-    ('AND', r'&&'), ('OR', r'\|\|'), ('NOT', r'!'),
-    ('INC', r'\+\+'), ('DEC', r'--'),
+    ('LE', r'<='), 
+    ('GE', r'>='), 
+    ('EQ', r'=='), 
+    ('NE', r'!='), 
+    ('LT', r'<'), 
+    ('GT', r'>'),
+    ('PLUS', r'\+'), 
+    ('MINUS', r'-'), 
+    ('MUL', r'\*'), 
+    ('DIV', r'/'), 
+    ('MOD', r'%'),
+    ('AND', r'&&'), 
+    ('OR', r'\|\|'), 
+    ('NOT', r'!'),
+    ('INC', r'\+\+'), 
+    ('DEC', r'--'),
     ('ASSIGN', r'='),
 
     # Delimiters
-    ('LBRACE', r'\{'), ('RBRACE', r'\}'),
-    ('LPAREN', r'\('), ('RPAREN', r'\)'),
-    ('LBRACKET', r'\['), ('RBRACKET', r'\]'),
+    ('LBRACE', r'\{'), 
+    ('RBRACE', r'\}'),
+    ('LPAREN', r'\('), 
+    ('RPAREN', r'\)'),
+    ('LBRACKET', r'\['), 
+    ('RBRACKET', r'\]'),
     ('SEMI', r';'),
-    ('COMMA', r','),
+    ('COMMA', r','), 
     ('COLON', r':'),
 
     # Whitespace
@@ -55,9 +73,13 @@ def lex(code):
         kind, value = mo.lastgroup, mo.group()
         if kind == 'NUMBER':
             yield Token('NUMBER', int(value))
+        elif kind == 'STRING':
+            value = value[1:-1]  # remove quotes
+            yield Token('STRING', value)
         elif kind in ('SKIP', 'COMMENT', 'MCOMMENT'):
             continue
         elif kind == 'MISMATCH':
             raise RuntimeError(f'Unexpected character: {value}')
         else:
             yield Token(kind, value)
+
